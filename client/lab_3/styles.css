@@ -9,7 +9,6 @@
   flex-direction: column;
   font-family: ‘Segoe UI’, Candara, ‘Bitstream Vera Sans’, ‘DejaVu Sans’,
     ‘Bitsream Vera Sans’, ‘Trebuchet MS’, Verdana, ‘Verdana Ref’, sans-serif;
-  flex-wrap: wrap;
 }
 
 .nav-container {
@@ -59,7 +58,6 @@
 .photo-grid-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .photo-grid {
