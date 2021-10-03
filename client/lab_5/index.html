@@ -1,13 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8"/>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Adeyinka Telli's Lab 5</title>
-        <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href = "styles.css"/>
     </head>
     <body>
-        <header class="speaker-form-header">
-            <h1>Adeyinka Telli's Lab 5</h1>
-        </header>
+        <div class="wrapper">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"><div class="box is-size-2">Adeyinka Telli's Lab 5</div></div>
+                </div>
+                <form action='/api' method='get'>
+                <div class="columns">
+                <div class="column is-one-fifth is-offset-one-fifth">
+                <div class="box">
+                    <div class="field">
+                        <label class="label">First Name</label>
+                        <input class="input" type="text">
+                    </div>
+
+                    <div class="field">   
+                        <label class="label">Food Preference</label>
+                        <input class="input" type="text">
+                    </div> 
+
+                    <div class="title is-6">Veggie or Vegan?</div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="vegan-or-veggie">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="vegan-or-veggie">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button class="button is-dark">Submit</button>
+                    </div>
+            </div>
+        </div>
+    </form>
+    <div class="columns is-align-items-center">
+    <div class="column is-full">
+        <div class="box">This is going to be something in two weeks &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    </div>
+    </div>
+</div>
+</div>
+        </div>
     </body>
 </html>
