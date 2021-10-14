@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Adeyinka Telli's Lab 6</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href = "styles.css"/>
+    </head>
+
+    <body>
+        <div class="title">Adeyinka Telli's Lab 6</div>
+        <form>
+            <div class="column is is-one-fifth">
+            <div class="field">
+                <div class="control">
+                    <input class="input search" type="text">
+                </div>
+            </div>
+            </div>
+            <div class="column is-offset-1">
+            <div class="suggestions">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        </form>
+        <script>
+            async function windowActions() {
+            const endpoint = "https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json";
+
+
+            const request = await fetch(endpoint)
+            const locations = await request.json();
+
+            
+
+            function findMatches(wordToMatch, locations) {
+                return locations.filter(place => {
+                    const regex = new RegExp(wordToMatch, 'gi');
+                    return place.name.match(regex) || place.category.match(regex);
+                })
+            }
+
+
+            function displayMatches(event) {
+                const matchArray = findMatches(event.target.value, locations);
+                const html = matchArray.map(place => {
+                    if (!event.target.value) {
+                    document.querySelector(".suggestions").innerHTML = "";
+                    return "";
+                    }
+                    const regex = new RegExp(event.target.value, 'gi');
+                    const locName = place.name;
+                    const cat = place.category;
+                    return `
+                    <li>
+                        <span class="name">${locName}<br></span>
+                        <span class ="category">${cat}<br></span>
+                        <span class="address_line_1"><em>${place.address_line_1}</em><br></span>
+                        <span class="city"><em>${place.city}</em><br></span>
+                        <span class="zipcode"><em>${place.zip}</em><br></span>
+                        </li>,<br>`;
+                }).join('');
+                suggestions.innerHTML = html; 
+            }
+
+            const searchInput = document.querySelector('.search');
+            const suggestions = document.querySelector('.suggestions');
+
+            searchInput.addEventListener('change', displayMatches);
+            searchInput.addEventListener('keyup', (evt) => {displayMatches(evt)});
+
+            }
+            window.onload = windowActions;
+        </script>
+
+    </body>
+</html>
