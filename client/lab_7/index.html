@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Adeyinka Telli's Lab 7</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href = "styles.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    </head>
+
+    <body>
+        <div class="column is-one-third">
+        <div class="title">Adeyinka Telli's Lab 7</div>
+        <div class="has-text-justified">Zip Code Food Search</div>
+    </div>
+        <form>
+            <div class="column is-one-fifth">
+                <h1><strong>Search</strong></h1>
+            <div class="field">
+                <div class="control">
+                    <input class="input search" type="text">
+                </div>
+            </div>
+            </div>
+
+        </form><br>
+        <div class="columns is-half">
+            <div class="column is-one-quarter">
+        <div class="append-box"></div>
+    </div>
+        <div class="column is-one-quarter is-offset-1">
+            <div id="mapid"></div>
+    </div>
+</div>
+        <script>
+            async function windowActions() {
+
+            const endpoint = "https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json";
+            const request = await fetch(endpoint)
+            const visibleListOfItems = document.querySelector('.append-box')
+            const locations = await request.json();
+
+
+            
+
+            function findMatches(wordToMatch, locations) {
+                return locations.filter(place => {
+                    const regex = new RegExp(wordToMatch, 'gi');
+                    return place.name.match(regex) || place.category.match(regex);
+                })
+            }
+
+            function filterFunction(event, request, list, mymap) { 
+                console.log(event.target.value)
+                const filteredList =locations.filter((item, index) => {
+                    if (!event.target.value) {
+                    document.querySelector(".suggestions").innerHTML = "";
+                    return "";
+                    }
+                    const zipcode = event.target.value;
+                    return item.zip === zipcode;
+                });
+                console.table(filteredList)
+
+                const limitedList = filteredList.slice(0,5)
+
+                limitedList.forEach((item, index) => {
+                    const point = item.geocoded_column_1
+
+                    if(!point || !point.coordinates){
+                        return
+                    }
+
+                    const latLong = point.coordinates
+                    const marker = latLong.reverse()
+
+                    list.innerHTML += `<span class = "column">${item.name}<br>
+                    ${item.address_line_1}</span><br>`
+                    console.log(marker)
+                    L.marker(marker).addTo(mymap)
+                })
+            } 
+
+            function displayMatches(event) {
+                const matchArray = findMatches(event.target.value, locations);
+                const html = matchArray.map(place => {
+                    if (!event.target.value) {
+                    document.querySelector(".suggestions").innerHTML = "";
+                    return "";
+                    }
+                    const regex = new RegExp(event.target.value, 'gi');
+                    const locName = place.name;
+                    const cat = place.category;
+                }).join('');
+                suggestions.innerHTML = html; 
+            }
+
+            var mymap = L.map('mapid').setView([38.989, -76.93], 12);
+
+            const searchInput = document.querySelector('.search');
+            const suggestions = document.querySelector('.suggestions');
+            const inputBox = document.querySelector('.input');
+
+            searchInput.addEventListener('change', displayMatches);
+            searchInput.addEventListener('keyup', (evt) => {displayMatches(evt)});
+
+            inputBox.addEventListener('input', (evt) => {filterFunction(evt, request, visibleListOfItems, mymap);});
+
+
+            
+            
+
+
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiYW5vbnltb3VzdCIsImEiOiJja3V3OHNqbXE2ZnhtMnduenVweDY0NDNpIn0.u_dEC-avofJXHOi8sk8oPg'
+}).addTo(mymap);
+            }
+
+            window.onload = windowActions;
+        </script>
+
+    </body>
+</html>
